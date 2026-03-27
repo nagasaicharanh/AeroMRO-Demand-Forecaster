@@ -1,17 +1,39 @@
-# AeroMRO Demand Forecaster
+<div align="center">
 
-[![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![Dashboard: Plotly Dash](https://img.shields.io/badge/Dashboard-Plotly%20Dash-3F4F75?logo=plotly&logoColor=white)](https://dash.plotly.com/)
-[![Tracking: MLflow](https://img.shields.io/badge/Tracking-MLflow-0194E2?logo=mlflow&logoColor=white)](https://mlflow.org/)
-[![LLM: Ollama](https://img.shields.io/badge/LLM-Ollama-111111)](https://ollama.com/)
-[![Docker Compose](https://img.shields.io/badge/Container-Docker%20Compose-2496ED?logo=docker&logoColor=white)](https://docs.docker.com/compose/)
-[![Last Commit](https://img.shields.io/github/last-commit/nagasaicharanh/AeroMRO-Demand-Forecaster?label=Last%20Commit)](https://github.com/nagasaicharanh/AeroMRO-Demand-Forecaster/commits/main)
+# ✈️ AeroMRO Demand Forecaster
 
-Production-style local demand forecasting system for aircraft MRO inventory analytics, using the M5 Forecasting Competition dataset as a spare-parts demand proxy.
+### Local demand forecasting and analyst assistant for aircraft MRO inventory
 
-**Quick links:** [Architecture](#architecture) · [Setup](#setup) · [Run Locally](#run-locally) · [LLM Analyst](#llm-analyst) · [Docker](#docker) · [Screenshots](#screenshots)
+[![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![Dashboard](https://img.shields.io/badge/Dashboard-Plotly%20Dash-3F4F75?style=for-the-badge&logo=plotly&logoColor=white)](https://dash.plotly.com/)
+[![Experiment Tracking](https://img.shields.io/badge/Tracking-MLflow-0194E2?style=for-the-badge&logo=mlflow&logoColor=white)](https://mlflow.org/)
+[![Forecasting](https://img.shields.io/badge/Forecasting-StatsForecast%20%2B%20XGBoost-4C8EDA?style=for-the-badge)](https://nixtlaverse.nixtla.io/statsforecast/)
+[![LLM Assistant](https://img.shields.io/badge/LLM-Ollama-111111?style=for-the-badge)](https://ollama.com/)
+[![Docker](https://img.shields.io/badge/Container-Docker%20Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://docs.docker.com/compose/)
 
-## Architecture
+Production-style forecasting workflow using the M5 Forecasting Competition dataset as a spare-parts demand proxy, with ETL, model training, experiment tracking, and an interactive dashboard assistant.
+</div>
+
+## 🎯 Key Features
+
+- **End-to-End Pipeline**: M5 CSV ingestion, demand-table generation, forecasting, MLflow tracking, and dashboard visualization.
+- **Multiple Model Families**: Baseline training support for statistical and ML approaches (StatsForecast, XGBoost, LSTM workflows).
+- **Analyst Assistant**: Ollama-backed dashboard chat with optional LangGraph tool-calling and optional RAG context.
+- **Practical Resource Controls**: Tunable ETL limits (`--sales-rows`, `--price-rows`, `--top-n`, `--last-days`) for constrained hardware.
+- **Local-First Deployment**: Runs fully on local machine; optional Docker setup for consistent environments.
+
+## 🖼️ Application Interface
+
+### Forecast Explorer
+![Forecast Explorer](screenshots/Forecast%20Explorer.png)
+
+### Model Comparison
+![Model Comparison](screenshots/Model%20Comparison.png)
+
+### LLM Analyst Chat
+![LLM Analyst Chat](screenshots/LLM%20Analyst%20Chat.png)
+
+## 🏗️ Architecture
 
 ```text
 M5 CSVs -> pandas ETL -> SQLite demand table
@@ -23,7 +45,29 @@ M5 CSVs -> pandas ETL -> SQLite demand table
                          +-> Plotly Dash dashboard
 ```
 
-## Setup
+## 📦 Tech Stack
+
+| Component | Technology | Purpose |
+|-----------|-----------|---------|
+| **Data Ingestion / ETL** | pandas + SQLite | Convert large M5 CSVs into queryable demand data |
+| **Forecasting** | StatsForecast, XGBoost, LSTM | Compare demand forecasting approaches |
+| **Experiment Tracking** | MLflow | Track runs, metrics, and artifacts |
+| **Dashboard** | Plotly Dash | Interactive monitoring and analysis UI |
+| **Assistant Runtime** | Ollama + optional LangGraph | Local chat assistant with tool-calling option |
+| **Optional RAG** | ChromaDB + local docs (`data/docs/`) | Ground answers with local reference material |
+| **Containerization** | Docker Compose | Reproducible local deployment |
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Python 3.11+
+- Kaggle M5 files in `data/raw/`:
+  - `sales_train_evaluation.csv`
+  - `calendar.csv`
+  - `sell_prices.csv`
+
+### Installation
 
 ```bash
 conda create -n aero-forecast python=3.11
@@ -33,13 +77,7 @@ pip install -e .
 python -m ipykernel install --user --name aero-forecast
 ```
 
-Download these Kaggle M5 files into `data/raw/`:
-
-- `sales_train_evaluation.csv`
-- `calendar.csv`
-- `sell_prices.csv`
-
-## Run Locally
+### Run Locally
 
 ```bash
 python -m aeromro_forecaster.etl.build_database --top-n 100 --last-days 730 --sales-rows 5000 --price-rows 250000
@@ -48,38 +86,33 @@ python -m aeromro_forecaster.models.train_baselines --top-n 25 --horizon 28 --n-
 python dashboard/app.py
 ```
 
-Dashboard: <http://localhost:8050>  
-MLflow: <http://localhost:5000>
+- Dashboard: <http://localhost:8050>
+- MLflow: <http://localhost:5000>
 
-## LLM Analyst
+## 🤖 LLM Analyst
 
-The dashboard chat uses a lightweight Ollama implementation by default and can run without LangGraph. Install Ollama, then pull the local chat model:
+Pull the default local chat model:
 
 ```bash
 ollama pull llama3.2
 ```
 
-Set `OLLAMA_BASE_URL` or `OLLAMA_CHAT_MODEL` if your Ollama server or model differs. If Ollama is not running, the chat tab falls back to a local tool summary from SQLite, forecast CSVs, and optional RAG context.
+Set `OLLAMA_BASE_URL` or `OLLAMA_CHAT_MODEL` if needed. If Ollama is unavailable, the chat tab falls back to a local tool summary from SQLite, forecast CSVs, and optional RAG context.
 
-For LangGraph tool-calling mode, install the optional LangChain dependencies and set:
+For LangGraph tool-calling mode:
 
 ```bash
 set AEROMRO_AGENT_BACKEND=langgraph
 ```
 
-For optional RAG PDFs, also pull the embedding model:
+For optional RAG PDFs, also pull embeddings and build index:
 
 ```bash
 ollama pull nomic-embed-text
-```
-
-Optional RAG PDFs can be placed in `data/docs/`:
-
-```bash
 python -m aeromro_forecaster.llm_agent.build_rag
 ```
 
-## Docker
+## 🐳 Docker
 
 ```bash
 docker compose up --build
@@ -91,37 +124,23 @@ Services:
 - MLflow: <http://localhost:5000>
 - Ollama: <http://localhost:11434>
 
-Pull Ollama models into the compose volume:
+Pull Ollama models into compose volume:
 
 ```bash
 docker compose exec ollama ollama pull llama3.2
 docker compose exec ollama ollama pull nomic-embed-text
 ```
 
-## Screenshots
-
-### Forecast Explorer
-
-![Forecast Explorer](screenshots/Forecast%20Explorer.png)
-
-### Model Comparison
-
-![Model Comparison](screenshots/Model%20Comparison.png)
-
-### LLM Analyst Chat
-
-![LLM Analyst Chat](screenshots/LLM%20Analyst%20Chat.png)
-
-## Tests
+## ✅ Tests
 
 ```bash
 pytest
 ```
 
-CI runs fixture-backed tests and a Docker build. Full M5 training is intentionally not required in CI.
+CI runs fixture-backed tests and Docker build checks. Full M5 training is intentionally not required in CI.
 
-## Repository Notes
+## 📝 Repository Notes
 
-Generated datasets, SQLite databases, MLflow runs, Chroma indexes, and model artifacts are ignored by git. Keep raw Kaggle data local under `data/raw/`.
+Generated datasets, SQLite databases, MLflow runs, Chroma indexes, and model artifacts are ignored by git. Keep raw Kaggle files local under `data/raw/`.
 
-For limited hardware, keep the ETL trimmed. `--sales-rows` and `--price-rows` limit CSV ingestion, `--top-n` limits the number of SKUs before reshaping, and `--last-days` limits the history window before the large melt/join step. The same defaults can be overridden with `AEROMRO_SALES_ROWS`, `AEROMRO_PRICE_ROWS`, `AEROMRO_TOP_N`, and `AEROMRO_LAST_DAYS`.
+For limited hardware, ETL controls can be overridden with environment variables: `AEROMRO_SALES_ROWS`, `AEROMRO_PRICE_ROWS`, `AEROMRO_TOP_N`, and `AEROMRO_LAST_DAYS`.
