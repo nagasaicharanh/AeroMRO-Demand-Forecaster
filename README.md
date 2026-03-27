@@ -89,6 +89,20 @@ docker compose exec ollama ollama pull llama3.2
 docker compose exec ollama ollama pull nomic-embed-text
 ```
 
+## Screenshots
+
+### Forecast Explorer
+
+![Forecast Explorer](screenshots/Forecast%20Explorer.png)
+
+### Model Comparison
+
+![Model Comparison](screenshots/Model%20Comparison.png)
+
+### LLM Analyst Chat
+
+![LLM Analyst Chat](screenshots/LLM%20Analyst%20Chat.png)
+
 ## Tests
 
 ```bash
