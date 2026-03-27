@@ -1,0 +1,24 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8050:8050"
+      - "5000:5000"
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - AEROMRO_DB_PATH=data/mro_forecast.db
+    volumes:
+      - ./data:/app/data
+      - ./mlruns:/app/mlruns
+    depends_on:
+      - ollama
+
+  ollama:
+    image: ollama/ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_models:/root/.ollama
+
+volumes:
+  ollama_models:
