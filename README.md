@@ -1,6 +1,15 @@
 # AeroMRO Demand Forecaster
 
+[![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![Dashboard: Plotly Dash](https://img.shields.io/badge/Dashboard-Plotly%20Dash-3F4F75?logo=plotly&logoColor=white)](https://dash.plotly.com/)
+[![Tracking: MLflow](https://img.shields.io/badge/Tracking-MLflow-0194E2?logo=mlflow&logoColor=white)](https://mlflow.org/)
+[![LLM: Ollama](https://img.shields.io/badge/LLM-Ollama-111111)](https://ollama.com/)
+[![Docker Compose](https://img.shields.io/badge/Container-Docker%20Compose-2496ED?logo=docker&logoColor=white)](https://docs.docker.com/compose/)
+[![Last Commit](https://img.shields.io/github/last-commit/nagasaicharanh/AeroMRO-Demand-Forecaster?label=Last%20Commit)](https://github.com/nagasaicharanh/AeroMRO-Demand-Forecaster/commits/main)
+
 Production-style local demand forecasting system for aircraft MRO inventory analytics, using the M5 Forecasting Competition dataset as a spare-parts demand proxy.
+
+**Quick links:** [Architecture](#architecture) · [Setup](#setup) · [Run Locally](#run-locally) · [LLM Analyst](#llm-analyst) · [Docker](#docker) · [Screenshots](#screenshots)
 
 ## Architecture
 
