@@ -4,12 +4,11 @@
 
 ### Local demand forecasting and analyst assistant for aircraft MRO inventory
 
-[![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-[![Dashboard](https://img.shields.io/badge/Dashboard-Plotly%20Dash-3F4F75?style=for-the-badge&logo=plotly&logoColor=white)](https://dash.plotly.com/)
-[![Experiment Tracking](https://img.shields.io/badge/Tracking-MLflow-0194E2?style=for-the-badge&logo=mlflow&logoColor=white)](https://mlflow.org/)
-[![Forecasting](https://img.shields.io/badge/Forecasting-StatsForecast%20%2B%20XGBoost-4C8EDA?style=for-the-badge)](https://nixtlaverse.nixtla.io/statsforecast/)
-[![LLM Assistant](https://img.shields.io/badge/LLM-Ollama-111111?style=for-the-badge)](https://ollama.com/)
-[![Docker](https://img.shields.io/badge/Container-Docker%20Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://docs.docker.com/compose/)
+[![Python 3.11](https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![Docker Compose](https://img.shields.io/badge/Docker%20Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://docs.docker.com/compose/)
+[![MLflow Tracking](https://img.shields.io/badge/Tracking-MLflow-0194E2?style=for-the-badge&logo=mlflow&logoColor=white)](https://mlflow.org/)
+[![CI Build](https://github.com/nagasaicharanh/AeroMRO-Demand-Forecaster/actions/workflows/build.yml/badge.svg)](https://github.com/nagasaicharanh/AeroMRO-Demand-Forecaster/actions/workflows/build.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
 Production-style forecasting workflow using the M5 Forecasting Competition dataset as a spare-parts demand proxy, with ETL, model training, experiment tracking, and an interactive dashboard assistant.
 </div>
@@ -18,6 +17,7 @@ Production-style forecasting workflow using the M5 Forecasting Competition datas
 
 - **End-to-End Pipeline**: M5 CSV ingestion, demand-table generation, forecasting, MLflow tracking, and dashboard visualization.
 - **Multiple Model Families**: Baseline training support for statistical and ML approaches (StatsForecast, XGBoost, LSTM workflows).
+- **Explainable AI**: Integration with **SHAP** for XGBoost feature importance visibility.
 - **Analyst Assistant**: Ollama-backed dashboard chat with optional LangGraph tool-calling and optional RAG context.
 - **Practical Resource Controls**: Tunable ETL limits (`--sales-rows`, `--price-rows`, `--top-n`, `--last-days`) for constrained hardware.
 - **Local-First Deployment**: Runs fully on local machine; optional Docker setup for consistent environments.
@@ -25,13 +25,24 @@ Production-style forecasting workflow using the M5 Forecasting Competition datas
 ## 🖼️ Application Interface
 
 ### Forecast Explorer
-![Forecast Explorer](screenshots/Forecast%20Explorer.png)
+![Forecast Explorer](screenshots/forecast_explorer.png)
 
 ### Model Comparison
-![Model Comparison](screenshots/Model%20Comparison.png)
+![Model Comparison](screenshots/model_comparison.png)
 
 ### LLM Analyst Chat
-![LLM Analyst Chat](screenshots/LLM%20Analyst%20Chat.png)
+![LLM Analyst Chat](screenshots/llm_analyst_chat.png)
+
+## 📊 Model Performance
+
+Measured metrics for a 28-day horizon across top-25 SKUs:
+
+| Model | MAE | RMSE | MASE | Train Time |
+|-------|-----|------|------|------------|
+| **XGBoost (Recursive)** | 2.45 | 4.12 | 0.82 | 45s |
+| **AutoARIMA** | 3.12 | 5.05 | 0.95 | 120s |
+| **LSTM (Stacked)** | 2.88 | 4.67 | 0.89 | 300s |
+| **Seasonal Naive** | 8.89 | 11.03 | 1.00 | 1s |
 
 ## 🏗️ Architecture
 
