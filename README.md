@@ -44,7 +44,9 @@ Measured metrics for a 28-day horizon across top-25 SKUs:
 | **LSTM (Stacked)** | 2.88 | 4.67 | 0.89 | 300s |
 | **Seasonal Naive** | 8.89 | 11.03 | 1.00 | 1s |
 
-## 🏗️ Architecture
+## 🏗 Architecture
+![Architecture Diagram](screenshots/ArchitectureDiagram.png)
+
 
 ```text
 M5 CSVs -> pandas ETL -> SQLite demand table
